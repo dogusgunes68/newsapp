@@ -17,8 +17,8 @@ class NewsApiService {
         .build()
         .create(NewsAPI::class.java)
 
-    fun getNews(content : String, date :String, sortBy : String) : Single<News>{
-        return news_api.getNews(content,date,sortBy)
+    fun getNews(query : String, date :String, sortBy : String) : Single<News>{
+        return news_api.getNews(query,date,sortBy)
     }
 
 }

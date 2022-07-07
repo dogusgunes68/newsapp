@@ -13,12 +13,14 @@ import com.example.newsapp.R
 import com.example.newsapp.adapter.NewsRecyclerAdapter
 import com.example.newsapp.databinding.FragmentNewsListBinding
 import com.example.newsapp.model.Article
+import com.example.newsapp.viewmodel.NewsDetailViewModel
 import com.example.newsapp.viewmodel.NewsViewModel
 import java.time.LocalDateTime
 
 class NewsListFragment : Fragment() {
 
     private lateinit var newsViewModel : NewsViewModel
+    private lateinit var newsDetailViewModel: NewsDetailViewModel
     private lateinit var binding : FragmentNewsListBinding
     private lateinit var newsRecyclerAdapter : NewsRecyclerAdapter
     private lateinit var mSearchItem : MenuItem
@@ -43,10 +45,13 @@ class NewsListFragment : Fragment() {
         setHasOptionsMenu(true)
         binding = FragmentNewsListBinding.bind(view)
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel::class.java)
+        newsDetailViewModel = ViewModelProviders.of(this).get(NewsDetailViewModel::class.java)
 
-        newsRecyclerAdapter = NewsRecyclerAdapter(arrayListOf(),newsViewModel)
+        newsRecyclerAdapter = NewsRecyclerAdapter(arrayListOf(),newsViewModel,newsDetailViewModel)
 
+        //It works on API LEVEL 26. that's why now became red
         var date = LocalDateTime.now().toString()
+
         newsViewModel.getNewsFromInternet("Apple",date.substring(0,10) , "popularity")
         observeNews()
 

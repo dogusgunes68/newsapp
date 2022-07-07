@@ -12,6 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
+        android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
@@ -20,11 +21,11 @@
             android:id="@+id/recyclerNewsTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="News Title"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="italic"
-            android:layout_margin="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

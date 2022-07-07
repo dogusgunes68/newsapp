@@ -13,12 +13,13 @@ import com.example.newsapp.R
 import com.example.newsapp.adapter.FavoriteNewsAdapter
 import com.example.newsapp.databinding.FragmentFavoritesBinding
 import com.example.newsapp.model.Article
+import com.example.newsapp.viewmodel.NewsDetailViewModel
 import com.example.newsapp.viewmodel.NewsViewModel
 
 class FavoritesFragment : Fragment() {
 
     private lateinit var binding : FragmentFavoritesBinding
-    private lateinit var newsViewModel : NewsViewModel
+    private lateinit var newsViewModel : NewsDetailViewModel
     private var favoriteNewsAdapter = FavoriteNewsAdapter(arrayListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ class FavoritesFragment : Fragment() {
 
         binding = FragmentFavoritesBinding.bind(view)
 
-        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel::class.java)
+        newsViewModel = ViewModelProviders.of(this).get(NewsDetailViewModel::class.java)
 
         newsViewModel.getAllArticleFromRoom()
 

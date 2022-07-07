@@ -20,12 +20,11 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
 
     private val disposable = CompositeDisposable()
     private val newsApiService : NewsApiService = NewsApiService()
-    private val newsDatabase = NewsDatabase(application)
-    private val newsDao = newsDatabase.newsDao()
 
-    fun getNewsFromInternet(content : String,date:String,sortBy:String){
+
+    fun getNewsFromInternet(query : String,date:String,sortBy:String){
         newsLoading.value = true
-        disposable.add(newsApiService.getNews(content,date,sortBy)
+        disposable.add(newsApiService.getNews(query,date,sortBy)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableSingleObserver<News>(){
@@ -46,34 +45,5 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
         )
     }
 
-    val article = MutableLiveData<Article>()
-    val articleList = MutableLiveData<List<Article>>()
-    val articleError = MutableLiveData<Boolean>()
-    val articleLoading = MutableLiveData<Boolean>()
-
-    fun addDataToRoom(a: Article){
-
-        launch {
-            var long = newsDao.insertArticle(a)
-            a.uuid = long
-
-            article.value = a
-
-        }
-
-    }
-
-    fun getAllArticleFromRoom(){
-
-        articleLoading.value = true
-
-        launch {
-            var articles = newsDao.getAllArticles()
-            articleList.value = articles
-            articleLoading.value = false
-        }
-
-
-    }
 
 }
