@@ -28,5 +28,7 @@ data class Article(@ColumnInfo(name = "source")
     @PrimaryKey(autoGenerate = true)
     var uuid : Long = 0;
 
+    var isItFavorite : Boolean = false
+
 
 }

@@ -7,7 +7,12 @@ class SourceTypeConverter {
     @TypeConverter
     fun fromSource(source: Source): String {
         return JSONObject().apply {
-            put("id", source.id)
+            if (source.id != null){
+                put("id", source.id)
+            }else{
+                put("id", "null")
+            }
+
             put("name", source.name)
         }.toString()
     }

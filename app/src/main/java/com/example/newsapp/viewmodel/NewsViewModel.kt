@@ -72,6 +72,8 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
             articleList.value = articles
             articleLoading.value = false
         }
+
+
     }
 
 }

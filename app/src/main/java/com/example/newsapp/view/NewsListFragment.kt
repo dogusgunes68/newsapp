@@ -7,18 +7,20 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapter.NewsRecyclerAdapter
 import com.example.newsapp.databinding.FragmentNewsListBinding
 import com.example.newsapp.model.Article
 import com.example.newsapp.viewmodel.NewsViewModel
+import java.time.LocalDateTime
 
 class NewsListFragment : Fragment() {
 
     private lateinit var newsViewModel : NewsViewModel
     private lateinit var binding : FragmentNewsListBinding
-    private var newsRecyclerAdapter = NewsRecyclerAdapter(arrayListOf())
+    private lateinit var newsRecyclerAdapter : NewsRecyclerAdapter
     private lateinit var mSearchItem : MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +44,10 @@ class NewsListFragment : Fragment() {
         binding = FragmentNewsListBinding.bind(view)
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel::class.java)
 
-        newsViewModel.getNewsFromInternet("Apple", "2022-06-29", "popularity")
+        newsRecyclerAdapter = NewsRecyclerAdapter(arrayListOf(),newsViewModel)
+
+        var date = LocalDateTime.now().toString()
+        newsViewModel.getNewsFromInternet("Apple",date.substring(0,10) , "popularity")
         observeNews()
 
         binding.topAppBar.setNavigationOnClickListener {
@@ -53,7 +58,7 @@ class NewsListFragment : Fragment() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.favorite -> {
-                    // Handle favorite icon press
+                    Navigation.findNavController(view).navigate(NewsListFragmentDirections.actionNewsListFragment2ToFavoritesFragment())
                     true
                 }
                 R.id.search -> {
@@ -68,13 +73,15 @@ class NewsListFragment : Fragment() {
             }
         }
 
+
+
     }
 
     fun search(){
         var menu = binding.topAppBar.menu
 
         mSearchItem = menu.findItem(R.id.search)
-        var searchView = mSearchItem.actionView as androidx.appcompat.widget.SearchView
+        var searchView = mSearchItem.actionView as SearchView
 
         val theTextArea: SearchView.SearchAutoComplete =
             searchView.findViewById<View>(R.id.search_src_text) as SearchView.SearchAutoComplete
@@ -82,7 +89,7 @@ class NewsListFragment : Fragment() {
         theTextArea.setTextColor(Color.WHITE)
 
         searchView.setOnQueryTextListener(object :
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 newsRecyclerAdapter.filter.filter(query)
                 return true
@@ -108,7 +115,7 @@ class NewsListFragment : Fragment() {
 
         newsViewModel.news.observe(viewLifecycleOwner, Observer { news ->
             news.let {
-                newsRecyclerAdapter = NewsRecyclerAdapter(it.articles as ArrayList<Article>)
+                newsRecyclerAdapter.setNewsArticle(it.articles)
                 binding.newsRecyclerView.adapter = newsRecyclerAdapter
                 binding.newsRecyclerView.layoutManager = GridLayoutManager(context, 1)
                 binding.newsRecyclerView.visibility = View.VISIBLE

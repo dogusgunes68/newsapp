@@ -8,5 +8,18 @@
         android:id="@+id/newsListFragment2"
         android:name="com.example.newsapp.view.NewsListFragment"
         android:label="fragment_news_list"
-        tools:layout="@layout/fragment_news_list" />
+        tools:layout="@layout/fragment_news_list" >
+        <action
+            android:id="@+id/action_newsListFragment2_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.newsapp.view.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_newsListFragment2"
+            app:destination="@id/newsListFragment2" />
+    </fragment>
 </navigation>
