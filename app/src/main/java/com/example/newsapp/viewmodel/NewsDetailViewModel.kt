@@ -2,6 +2,7 @@ package com.example.newsapp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.example.newsapp.adapter.FavoriteNewsAdapter
 import com.example.newsapp.model.Article
 import com.example.newsapp.room.NewsDatabase
 import kotlinx.coroutines.launch
@@ -29,6 +30,20 @@ class NewsDetailViewModel(application: Application) : BaseViewModel(application)
 
     }
 
+    fun getAllArticleFromRoom(adapter: FavoriteNewsAdapter,position: Int){
+
+        articleLoading.value = true
+
+        launch {
+
+            var articles = newsDao.getAllArticles()
+            articleList.value = articles
+            println("get all article")
+            articleLoading.value = false
+        }
+
+    }
+
     fun getAllArticleFromRoom(){
 
         articleLoading.value = true
@@ -37,8 +52,17 @@ class NewsDetailViewModel(application: Application) : BaseViewModel(application)
             var articles = newsDao.getAllArticles()
             articleList.value = articles
             articleLoading.value = false
+
         }
 
+    }
+
+    fun deleteArticleFromRoom(articleId : Long,adapter : FavoriteNewsAdapter,position:Int){
+        launch {
+            newsDao.deleteArticle(articleId)
+            adapter.notifyItemRemoved(position)
+            getAllArticleFromRoom()
+        }
 
     }
 

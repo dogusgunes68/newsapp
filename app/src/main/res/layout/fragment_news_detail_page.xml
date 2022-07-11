@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.core.widget.NestedScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#333030"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
 
-    android:fillViewport="true">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:stretchColumns="1">
+
 <androidx.cardview.widget.CardView
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="3dp"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="4dp"
     app:cardMaxElevation="5dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
 
 
+    <androidx.core.widget.NestedScrollView
 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:fillViewport="true">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
@@ -47,8 +53,8 @@
             android:id="@+id/articleTitleText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="Title Text"
+            android:layout_margin="10dp"
+            android:text="Title"
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -61,7 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Source Text"
+            android:text="Source"
             android:textAlignment="center"
             android:textSize="14sp"
             android:textStyle="italic"
@@ -91,7 +97,7 @@
             android:inputType="textMultiLine"
             android:maxLines="50"
             android:padding="5dp"
-            android:text="Content Text"
+            android:text="Content"
             android:textAlignment="textStart"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/articleAuthorText"
@@ -103,6 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
             android:text="Published at : "
             android:textSize="18sp"
             android:textStyle="italic"
@@ -110,11 +117,13 @@
             app:layout_constraintTop_toBottomOf="@+id/articleContentText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    </TableLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 
 </androidx.cardview.widget.CardView>
 
-    </TableLayout>
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -1,19 +1,30 @@
 package com.example.newsapp.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.model.Article
+import com.example.newsapp.room.NewsDao
 import com.example.newsapp.util.downloadImage
 import com.example.newsapp.util.makePlaceHolder
+import com.example.newsapp.viewmodel.NewsDetailViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlin.coroutines.CoroutineContext
 
-class FavoriteNewsAdapter(val articles : ArrayList<Article>) : RecyclerView.Adapter<FavoriteNewsAdapter.FavoritesHolder>(){
+class FavoriteNewsAdapter(val articles : ArrayList<Article>,val newsDetailViewModel: NewsDetailViewModel) : RecyclerView.Adapter<FavoriteNewsAdapter.FavoritesHolder>(){
     class FavoritesHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+        var layout = itemView.findViewById<ConstraintLayout>(R.id.constraint_layout)
         var favoriteButton = itemView.findViewById<ImageButton>(R.id.addFavoriteButton)
         var titleTextView = itemView.findViewById<TextView>(R.id.recyclerNewsTitleText)
         var newsImageView = itemView.findViewById<ImageView>(R.id.recyclerNewsImageView)
@@ -31,10 +42,29 @@ class FavoriteNewsAdapter(val articles : ArrayList<Article>) : RecyclerView.Adap
             holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_black)
         }
 
+        holder.favoriteButton.setOnClickListener {
+            runBlocking {
+                launch {
+                    newsDetailViewModel.deleteArticleFromRoom(articles[position].uuid,this@FavoriteNewsAdapter,position)
+
+                }
+
+            }
+
+        }
+
+        holder.layout.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putLong("position", position.toLong())
+            Navigation.findNavController(it).navigate(R.id.action_favoritesFragment_to_newsDetailFragment,bundle)
+        }
 
     }
 
     override fun getItemCount(): Int {
+        if (articles.isNullOrEmpty()){
+            return 0
+        }
         return articles.size
     }
 
@@ -43,5 +73,6 @@ class FavoriteNewsAdapter(val articles : ArrayList<Article>) : RecyclerView.Adap
         articles.addAll(newArticles)
         notifyDataSetChanged()
     }
+
 
 }

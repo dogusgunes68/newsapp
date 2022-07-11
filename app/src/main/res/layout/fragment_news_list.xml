@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:background="#333030"
     tools:context=".view.NewsListFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -89,7 +90,7 @@
                 android:layout_height="50dp"
                 android:visibility="gone"
                 android:layout_marginTop="32dp"
-                android:indeterminateTint="@color/purple_700"
+                android:indeterminateTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

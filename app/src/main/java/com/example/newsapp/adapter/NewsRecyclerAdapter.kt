@@ -17,6 +17,7 @@ import com.example.newsapp.util.downloadImage
 import com.example.newsapp.util.makePlaceHolder
 import com.example.newsapp.viewmodel.NewsDetailViewModel
 import com.example.newsapp.viewmodel.NewsViewModel
+import kotlinx.coroutines.runBlocking
 
 class NewsRecyclerAdapter(var articles: ArrayList<Article>,val newsViewModel: NewsViewModel,val newsDetailViewModel: NewsDetailViewModel) : RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder>(),Filterable {
 
@@ -54,7 +55,9 @@ class NewsRecyclerAdapter(var articles: ArrayList<Article>,val newsViewModel: Ne
             if (!articles[position].isItFavorite){
                 holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_black)
                 articles[position].isItFavorite = true
+
                 newsDetailViewModel.addDataToRoom(articles[position])
+
             }else{
                 println("favorite")
             }

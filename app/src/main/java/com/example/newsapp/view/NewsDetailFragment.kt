@@ -48,14 +48,9 @@ class NewsDetailFragment : Fragment() {
             articlePosition = arguments?.getLong("position")!!.toLong()
         }
 
-
         observeArticle(articlePosition)
 
-
-
     }
-
-
 
     fun observeArticle(position : Long){
         newsViewModel.news.observe(viewLifecycleOwner, Observer { news ->
@@ -64,8 +59,8 @@ class NewsDetailFragment : Fragment() {
                     article = news.articles[position.toInt()]
                     binding.articleImage.downloadImage(article.urlToImage!!, makePlaceHolder(requireContext()))
                     binding.articleTitleText.text = article.title
-                    binding.articleSourceText.text = article.source!!.name
-                    binding.articleAuthorText.text = article.author
+                    binding.articleSourceText.text = "Soruce :"+article.source!!.name
+                    binding.articleAuthorText.text = "Author :"+article.author
                     binding.articleContentText.text = article.content
                     binding.articlePublishedAtText.text = "Published at: "+article.publishedAt
 

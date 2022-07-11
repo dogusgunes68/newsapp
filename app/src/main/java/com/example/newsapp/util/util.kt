@@ -9,7 +9,7 @@ import com.example.newsapp.R
 
 fun ImageView.downloadImage(imageUrl : String,placeholder : CircularProgressDrawable){
     val options = RequestOptions().placeholder(placeholder).error(R.mipmap.ic_launcher_round)
-    Glide.with(context).load(imageUrl).into(this)
+    Glide.with(context).setDefaultRequestOptions(options).load(imageUrl).into(this)
 }
 
 fun makePlaceHolder(context : Context) : CircularProgressDrawable {

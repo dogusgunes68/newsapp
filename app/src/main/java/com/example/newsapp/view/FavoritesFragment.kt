@@ -13,6 +13,9 @@ import com.example.newsapp.R
 import com.example.newsapp.adapter.FavoriteNewsAdapter
 import com.example.newsapp.databinding.FragmentFavoritesBinding
 import com.example.newsapp.model.Article
+import com.example.newsapp.room.NewsDao
+import com.example.newsapp.room.NewsDatabase
+import com.example.newsapp.service.NewsApiService
 import com.example.newsapp.viewmodel.NewsDetailViewModel
 import com.example.newsapp.viewmodel.NewsViewModel
 
@@ -20,7 +23,8 @@ class FavoritesFragment : Fragment() {
 
     private lateinit var binding : FragmentFavoritesBinding
     private lateinit var newsViewModel : NewsDetailViewModel
-    private var favoriteNewsAdapter = FavoriteNewsAdapter(arrayListOf())
+    private lateinit var favoriteNewsAdapter : FavoriteNewsAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +43,8 @@ class FavoritesFragment : Fragment() {
         binding = FragmentFavoritesBinding.bind(view)
 
         newsViewModel = ViewModelProviders.of(this).get(NewsDetailViewModel::class.java)
+        favoriteNewsAdapter = FavoriteNewsAdapter(arrayListOf(),newsViewModel)
+
 
         newsViewModel.getAllArticleFromRoom()
 
@@ -57,6 +63,8 @@ class FavoritesFragment : Fragment() {
                 binding.favoritesRecyclerView.layoutManager = GridLayoutManager(context,1)
                 binding.favoritesRecyclerView.adapter = favoriteNewsAdapter
                 binding.favoritesRecyclerView.visibility = View.VISIBLE
+            }else{
+                favoriteNewsAdapter.setArticles(arrayListOf())
             }
         })
     }
