@@ -44,23 +44,26 @@ class NewsRecyclerAdapter(var articles: ArrayList<Article>,val newsViewModel: Ne
         articles.get(position).urlToImage?.let { holder.newsImageView.downloadImage(it, makePlaceHolder(holder.itemView.context)) }
 
 
-
-        if (articles[position].isItFavorite){
-            holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_black)
-        }
-
+       compareArticles(position,holder)
 
 
         holder.favoriteButton.setOnClickListener {
-            if (!articles[position].isItFavorite){
-                holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_black)
-                articles[position].isItFavorite = true
 
-                newsDetailViewModel.addDataToRoom(articles[position])
+
+
+            if (articles[position].isItFavorite){
+
+                compareArticles(position,holder)
+                newsDetailViewModel.deleteArticleFromRoom(articles.get(position).uuid)
+                articles[position].isItFavorite = false
+                holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
 
             }else{
-                println("favorite")
+                newsDetailViewModel.addDataToRoom(articles[position])
+                articles[position].isItFavorite=true
+                holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_black)
             }
+
 
         }
 
@@ -70,6 +73,29 @@ class NewsRecyclerAdapter(var articles: ArrayList<Article>,val newsViewModel: Ne
             Navigation.findNavController(it).navigate(R.id.action_newsListFragment2_to_newsDetailFragment,bundle)
         }
 
+    }
+
+    fun compareArticles(position: Int,holder : NewsViewHolder){
+
+        var list = arrayListOf<Article>()
+        runBlocking {
+
+            list = newsDetailViewModel.getAllArticleFromRoom() as ArrayList<Article>
+
+            for (article in list){
+
+                if (article.url.equals(articles[position].url)){
+                    println("compare")
+                    articles[position].isItFavorite = true
+                    articles[position].uuid = article.uuid
+                    holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_black)
+                }else{
+                    holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                }
+
+            }
+
+        }
     }
 
     override fun getItemCount(): Int {

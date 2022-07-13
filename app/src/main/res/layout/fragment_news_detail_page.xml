@@ -115,6 +115,19 @@
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="@+id/articleContentText"
             app:layout_constraintTop_toBottomOf="@+id/articleContentText" />
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="gone"
+            android:layout_marginTop="32dp"
+            android:indeterminateTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ProgressBar>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </TableLayout>

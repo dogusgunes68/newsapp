@@ -38,15 +38,14 @@ class FavoriteNewsAdapter(val articles : ArrayList<Article>,val newsDetailViewMo
         holder.titleTextView.text = articles[position].title
         articles[position].urlToImage?.let { holder.newsImageView.downloadImage(it, makePlaceHolder(holder.itemView.context)) }
 
-        if (articles[position].isItFavorite){
-            holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_black)
-        }
+        holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_black)
+
 
         holder.favoriteButton.setOnClickListener {
             runBlocking {
                 launch {
-                    newsDetailViewModel.deleteArticleFromRoom(articles[position].uuid,this@FavoriteNewsAdapter,position)
-
+                    newsDetailViewModel.deleteArticleFromRoom(articles[position].uuid)
+                    notifyItemRemoved(position)
                 }
 
             }

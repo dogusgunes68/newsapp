@@ -122,7 +122,7 @@ class NewsListFragment : Fragment() {
             news.let {
                 newsRecyclerAdapter.setNewsArticle(it.articles)
                 binding.newsRecyclerView.adapter = newsRecyclerAdapter
-                binding.newsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+                binding.newsRecyclerView.layoutManager = GridLayoutManager(context, 1)
                 binding.newsRecyclerView.visibility = View.VISIBLE
                 binding.errorMessageText.visibility = View.GONE
                 binding.loadingProgressBar.visibility = View.GONE

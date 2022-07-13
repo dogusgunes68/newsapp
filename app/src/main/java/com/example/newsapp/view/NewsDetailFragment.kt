@@ -53,10 +53,31 @@ class NewsDetailFragment : Fragment() {
     }
 
     fun observeArticle(position : Long){
+
+        newsViewModel.newsLoading.observe(viewLifecycleOwner, Observer { loading ->
+
+            if (loading){
+                binding.loadingProgressBar.visibility = View.VISIBLE
+                binding.articleAuthorText.visibility = View.GONE
+                binding.articlePublishedAtText.visibility = View.GONE
+                binding.articleContentText.visibility = View.GONE
+                binding.articleSourceText.visibility = View.GONE
+                binding.articleImage.visibility = View.GONE
+                binding.articleTitleText.visibility = View.GONE
+            }
+
+        })
         newsViewModel.news.observe(viewLifecycleOwner, Observer { news ->
             news.let {
                 if (news != null){
                     article = news.articles[position.toInt()]
+                    binding.articleAuthorText.visibility = View.VISIBLE
+                    binding.articlePublishedAtText.visibility = View.VISIBLE
+                    binding.articleContentText.visibility = View.VISIBLE
+                    binding.articleSourceText.visibility = View.VISIBLE
+                    binding.articleImage.visibility = View.VISIBLE
+                    binding.articleTitleText.visibility = View.VISIBLE
+                    binding.loadingProgressBar.visibility = View.GONE
                     binding.articleImage.downloadImage(article.urlToImage!!, makePlaceHolder(requireContext()))
                     binding.articleTitleText.text = article.title
                     binding.articleSourceText.text = "Soruce :"+article.source!!.name
@@ -70,6 +91,7 @@ class NewsDetailFragment : Fragment() {
             }
 
         })
+
     }
 
 

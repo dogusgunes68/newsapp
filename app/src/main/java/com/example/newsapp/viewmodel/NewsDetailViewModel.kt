@@ -6,6 +6,7 @@ import com.example.newsapp.adapter.FavoriteNewsAdapter
 import com.example.newsapp.model.Article
 import com.example.newsapp.room.NewsDatabase
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class NewsDetailViewModel(application: Application) : BaseViewModel(application) {
 
@@ -44,23 +45,26 @@ class NewsDetailViewModel(application: Application) : BaseViewModel(application)
 
     }
 
-    fun getAllArticleFromRoom(){
+    fun getAllArticleFromRoom() : List<Article>{
 
         articleLoading.value = true
 
-        launch {
+        val list = arrayListOf<Article>()
+        runBlocking {
             var articles = newsDao.getAllArticles()
             articleList.value = articles
             articleLoading.value = false
-
+            list.addAll(articles)
         }
+
+        return list
 
     }
 
-    fun deleteArticleFromRoom(articleId : Long,adapter : FavoriteNewsAdapter,position:Int){
-        launch {
+    fun deleteArticleFromRoom(articleId : Long){
+        runBlocking {
             newsDao.deleteArticle(articleId)
-            adapter.notifyItemRemoved(position)
+            println("delete")
             getAllArticleFromRoom()
         }
 
