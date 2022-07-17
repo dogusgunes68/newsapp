@@ -78,7 +78,9 @@ class NewsDetailFragment : Fragment() {
                     binding.articleImage.visibility = View.VISIBLE
                     binding.articleTitleText.visibility = View.VISIBLE
                     binding.loadingProgressBar.visibility = View.GONE
-                    binding.articleImage.downloadImage(article.urlToImage!!, makePlaceHolder(requireContext()))
+                    if(article.urlToImage != null){
+                        binding.articleImage.downloadImage(article.urlToImage!!, makePlaceHolder(requireContext()))
+                    }
                     binding.articleTitleText.text = article.title
                     binding.articleSourceText.text = "Soruce :"+article.source!!.name
                     binding.articleAuthorText.text = "Author :"+article.author
