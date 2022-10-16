@@ -3,6 +3,8 @@ package com.example.newsapp.view
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapter.NewsRecyclerAdapter
 import com.example.newsapp.databinding.FragmentNewsListBinding
-import com.example.newsapp.model.Article
 import com.example.newsapp.viewmodel.NewsDetailViewModel
 import com.example.newsapp.viewmodel.NewsViewModel
 import java.time.LocalDateTime
@@ -24,6 +25,7 @@ class NewsListFragment : Fragment() {
     private lateinit var binding : FragmentNewsListBinding
     private lateinit var newsRecyclerAdapter : NewsRecyclerAdapter
     private lateinit var mSearchItem : MenuItem
+    lateinit var toggle : ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +57,12 @@ class NewsListFragment : Fragment() {
         newsViewModel.getNewsFromInternet("Apple",date.substring(0,10) , "popularity")
         observeNews()
 
+
+
         binding.topAppBar.setNavigationOnClickListener {
+
             // Handle navigation icon press
+            navigationDrawer()
         }
 
 
@@ -77,8 +83,34 @@ class NewsListFragment : Fragment() {
                 else -> false
             }
         }
+    }
 
+    fun navigationDrawer(){
+        val drawerLayout = binding.drawerLayout
+        val navView = binding.navView
 
+        toggle = ActionBarDrawerToggle(activity,drawerLayout,R.string.open,R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.nav_home -> Toast.makeText(it.actionView.context,"Home clicked",Toast.LENGTH_LONG).show()
+                R.id.nav_settings -> Toast.makeText(it.actionView.context,"Settings clicked",Toast.LENGTH_LONG).show()
+                R.id.nav_my_profile -> Toast.makeText(it.actionView.context,"Profile clicked",Toast.LENGTH_LONG).show()
+                R.id.nav_login -> Toast.makeText(it.actionView.context,"Login clicked",Toast.LENGTH_LONG).show()
+            }
+
+            true
+        }
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
 
     }
 
