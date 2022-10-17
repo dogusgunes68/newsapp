@@ -6,10 +6,17 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapter.NewsRecyclerAdapter
@@ -25,7 +32,8 @@ class NewsListFragment : Fragment() {
     private lateinit var binding : FragmentNewsListBinding
     private lateinit var newsRecyclerAdapter : NewsRecyclerAdapter
     private lateinit var mSearchItem : MenuItem
-    lateinit var toggle : ActionBarDrawerToggle
+    //lateinit var toggle : ActionBarDrawerToggle
+    private lateinit var navController : NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +57,7 @@ class NewsListFragment : Fragment() {
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel::class.java)
         newsDetailViewModel = ViewModelProviders.of(this).get(NewsDetailViewModel::class.java)
 
+
         newsRecyclerAdapter = NewsRecyclerAdapter(arrayListOf(),newsViewModel,newsDetailViewModel)
 
         //It works on API LEVEL 26. that's why now became red
@@ -58,15 +67,16 @@ class NewsListFragment : Fragment() {
         observeNews()
 
 
-
-        binding.topAppBar.setNavigationOnClickListener {
-
-            // Handle navigation icon press
-            navigationDrawer()
+        val drawerLayout : DrawerLayout = binding.drawerLayout
+        drawerLayout.closeDrawers()
+        binding.appBar.topAppBar.getChildAt(1).setOnClickListener {
+           drawerLayout.openDrawer(GravityCompat.START)
         }
 
 
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+
+
+        binding.appBar.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.favorite -> {
                     Navigation.findNavController(view).navigate(NewsListFragmentDirections.actionNewsListFragment2ToFavoritesFragment())
@@ -85,37 +95,11 @@ class NewsListFragment : Fragment() {
         }
     }
 
-    fun navigationDrawer(){
-        val drawerLayout = binding.drawerLayout
-        val navView = binding.navView
 
-        toggle = ActionBarDrawerToggle(activity,drawerLayout,R.string.open,R.string.close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
 
-        navView.setNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.nav_home -> Toast.makeText(it.actionView.context,"Home clicked",Toast.LENGTH_LONG).show()
-                R.id.nav_settings -> Toast.makeText(it.actionView.context,"Settings clicked",Toast.LENGTH_LONG).show()
-                R.id.nav_my_profile -> Toast.makeText(it.actionView.context,"Profile clicked",Toast.LENGTH_LONG).show()
-                R.id.nav_login -> Toast.makeText(it.actionView.context,"Login clicked",Toast.LENGTH_LONG).show()
-            }
-
-            true
-        }
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)){
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-
-    }
 
     fun search(){
-        var menu = binding.topAppBar.menu
+        var menu = binding.appBar.topAppBar.menu
 
         mSearchItem = menu.findItem(R.id.search)
         var searchView = mSearchItem.actionView as SearchView
